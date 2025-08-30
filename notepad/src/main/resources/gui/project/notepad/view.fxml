@@ -5,7 +5,9 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -17,11 +19,25 @@
          <menus>
             <Menu mnemonicParsing="false" text="File">
                <items>
-                  <MenuItem fx:id="fileMenuOption" mnemonicParsing="false" text="New" />
-                  <MenuItem mnemonicParsing="false" text="Open.." />
-                  <MenuItem mnemonicParsing="false" text="Save" />
+                  <MenuItem fx:id="fileMenuOption" mnemonicParsing="false" text="New">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem mnemonicParsing="false" text="Open..">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Save">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                   <MenuItem mnemonicParsing="false" text="Save As.." />
-                  <MenuItem mnemonicParsing="false" text="Exit" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="exitMenuOption" mnemonicParsing="false" onAction="#exitApplication" text="Exit">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Edit">
@@ -31,7 +47,9 @@
                   <MenuItem mnemonicParsing="false" text="Copy" />
                   <MenuItem mnemonicParsing="false" text="Paste" />
                   <MenuItem mnemonicParsing="false" text="Delete" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Select All" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Time/Date" />
                </items>
             </Menu>
@@ -68,7 +86,7 @@
                   <Font size="11.0" />
                </font>
             </Label>
-            <Label prefHeight="18.0" prefWidth="77.0" text="Ln 1, Col 2">
+            <Label fx:id="lineColTracker" prefHeight="18.0" prefWidth="100.0" text="Ln 1, Col 1">
                <font>
                   <Font size="11.0" />
                </font>
@@ -77,7 +95,7 @@
                </HBox.margin>
             </Label>
             <Pane prefHeight="23.0" prefWidth="231.0" HBox.hgrow="ALWAYS" />
-            <Label prefHeight="16.0" prefWidth="40.0" text="Linux">
+            <Label fx:id="operationLabel" prefHeight="16.0" prefWidth="40.0" text="Linux">
                <font>
                   <Font size="11.0" />
                </font>
