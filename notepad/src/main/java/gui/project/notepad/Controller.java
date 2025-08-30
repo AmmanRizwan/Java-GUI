@@ -1,10 +1,13 @@
 package gui.project.notepad;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+
+import java.time.LocalDateTime;
 
 public class Controller {
     @FXML
@@ -20,12 +23,10 @@ public class Controller {
     private MenuItem fileMenuOption;
 
     @FXML
-    private void countCharacter(ActionEvent event) {
-        editor.textProperty().addListener((observable, oldValue, newValue) -> {
-            int count = newValue.length();
-            System.out.println(count + " Characters");
-        });
-    }
+    private HBox statusBar;
+
+    @FXML
+    private CheckMenuItem checkStatusBar;
 
     @FXML
     public void initialize() {
@@ -40,10 +41,15 @@ public class Controller {
     @FXML
     public void updateLineColTracker() {
         int caretPos = editor.getCaretPosition();
-        String textUptoCaret = editor.getText().substring(0, caretPos);
+        StringBuilder textUptoCaret = new StringBuilder(editor.getText().substring(0, caretPos));
 
-        int line = textUptoCaret.split("\n", -1).length;
-        int col = caretPos - textUptoCaret.lastIndexOf("\n");
+        if (caretPos > textUptoCaret.length()) {
+            caretPos = textUptoCaret.length();
+        }
+
+        int line = textUptoCaret.toString().split("\n", -1).length;
+        int lastNewline = textUptoCaret.lastIndexOf("\n");
+        int col = caretPos - (lastNewline == -1 ? 0 : lastNewline + 1) + 1;
 
         lineColTracker.setText("Ln " + line + ", Col " + col);
     }
@@ -52,5 +58,30 @@ public class Controller {
     private void exitApplication() {
         System.out.println("Exiting Application");
         System.exit(0);
+    }
+
+    @FXML
+    private void showStatusBar() {
+        if (statusBar.isVisible()) {
+            statusBar.setVisible(false);
+            statusBar.setManaged(false);
+        } else {
+            statusBar.setVisible(true);
+            statusBar.setManaged(true);
+        }
+    }
+
+    @FXML
+    private void toggleWordWrap() {
+        if (editor.isWrapText()) {
+            editor.setWrapText(false);
+        } else {
+            editor.setWrapText(true);
+        }
+    }
+
+    @FXML
+    private void setDateTime() {
+        editor.appendText(LocalDateTime.now().toString());
     }
 }
