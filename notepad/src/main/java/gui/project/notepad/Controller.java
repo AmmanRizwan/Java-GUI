@@ -1,15 +1,21 @@
 package gui.project.notepad;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class Controller {
+
     @FXML
     private Label lineColTracker;
 
@@ -83,5 +89,40 @@ public class Controller {
     @FXML
     private void setDateTime() {
         editor.appendText(LocalDateTime.now().toString());
+    }
+
+    @FXML
+    private void openFileSelector(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Text File");
+//
+//        // The starting directory will be home
+//        fileChooser.setInitialDirectory(new File(System.getProperty("user.name")));
+//        // which file can be selected
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text File", "*.txt"),
+                new FileChooser.ExtensionFilter("Programming Language File", "*.py", "*.java", "*.json", "*.java", "*.js", "*.c", "*.cpp"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(Application.getPrimaryStage());
+        if (selectedFile != null) {
+            System.out.println("Selected File: " + selectedFile.getAbsolutePath());
+            StringBuffer stringBuffer = new StringBuffer();
+            try {
+                FileReader fileReader = new FileReader(selectedFile);
+                int character = 0;
+
+                while ((character = fileReader.read()) != -1) {
+                    stringBuffer.append((char) character);
+                }
+
+                editor.setText(stringBuffer.toString());
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }
